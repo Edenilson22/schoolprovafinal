@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
     Table,
     TableBody,
@@ -24,6 +25,15 @@ import { revalidatePath } from "next/cache";
      const response = await fetch("https://apiserver20241.vercel.app/students");
      return response.json();
     }
+    async function deleteStudent(formData: FormData){
+      "use server"
+      const id = formData.get("id") as string;
+      console.log(id)
+    const response = await fetch("https://apiserver20241.vercel.app/students/"+id, {
+      method: 'DELETE',
+    })
+      revalidatePath("/admin/student")
+  }
 
     return (
       <Table>
@@ -33,6 +43,7 @@ import { revalidatePath } from "next/cache";
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Nome</TableHead>
             <TableHead>Email</TableHead>
+            <TableHead>Ação</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -41,6 +52,12 @@ import { revalidatePath } from "next/cache";
               <TableCell className="font-medium">{item.id}</TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.email}</TableCell>
+              <TableCell>          <form >
+                                     <input type="text" hidden name="id" value={item.id}/>   
+                                    <Button variant= "destructive"
+                                     formAction={deleteStudent}>Excluir</Button>
+                                    </form>
+                                    </TableCell>
             </TableRow>
           ))}
         </TableBody>
