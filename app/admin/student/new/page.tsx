@@ -38,7 +38,7 @@ export default function SaveStudent() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(student)
         }
-      const response = await fetch("https://servidorprovafinal.vercel.app", requestOption)
+      const response = await fetch("https://servidorprovafinal.vercel.app/students/", requestOption)
       form.reset();
       alert("Estudante Cadastrado com Sucesso!")
 
