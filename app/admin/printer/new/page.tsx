@@ -19,28 +19,27 @@ import { Input } from "@/components/ui/input"
 const FormSchema = z.object({
     name: z.string().min(2, {
         message: "Nome precisa ter no mínimo 2 characteres."
-    }),
-    email: z.string().email({ message: "Digite o email correto" }),
+    })
+   
 })
 
-export default function SaveStudent() {
+export default function SavePrinter() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            name: "Adair",
-            email: "dfads@dfd.com.br"
+            name: "Impressora"
         },
     })
 
-    async function onSubmit(student: z.infer<typeof FormSchema>) {
+    async function onSubmit( printer: z.infer<typeof FormSchema>) {
         const requestOption = {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(student)
+            body: JSON.stringify(printer)
         }
-      const response = await fetch("https://servidorprovafinal.vercel.app/students/", requestOption)
+      const response = await fetch("https://servidorprovafinal.vercel.app/printers/", requestOption)
       form.reset();
-      alert("Estudante Cadastrado com Sucesso!")
+      alert("Impressora Cadastrada com Sucesso!")
 
     }
 
@@ -54,20 +53,7 @@ export default function SaveStudent() {
                         <FormItem>
                             <FormLabel>Nome</FormLabel>
                             <FormControl>
-                                <Input placeholder="Digite o nome do Estudante" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email:</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Digite o email do Estudante" {...field} />
+                                <Input placeholder="Digite o nome da Impressora" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

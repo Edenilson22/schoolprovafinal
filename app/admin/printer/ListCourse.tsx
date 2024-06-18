@@ -3,62 +3,56 @@ import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
+  TableCell, TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+  TableRow
+} from "@/components/ui/table";
 import { revalidatePath } from "next/cache";
+import { IPrinter } from "./List copy";
 
 
-interface IStudent {
-  id: number,
-  name: string,
-  email: string
-}
 
-export default async function ListStudent() {
-  const students = await list()
+export default async function ListPrinter() {
+  const printer = await list();
   async function list() {
-    revalidatePath("/admin/student")
-    const response = await fetch("https://apiserver20241.vercel.app/students");
+    revalidatePath("/admin/printer");
+    const response = await fetch("https://apiserver20241.vercel.app/printers");
     return response.json();
   }
 
-  async function deleteStudent(formData: FormData) {
-    "use server"
+  async function deletePrinter(formData: FormData) {
+    "use server";
     const id = formData.get("id") as string;
-    console.log(id)
-    const response = await fetch("https://apiserver20241.vercel.app/students/" + id, {
+    console.log(id);
+    const response = await fetch("https://apiserver20241.vercel.app/printers/" + id, {
       method: 'DELETE',
-    })
-    revalidatePath("/admin/student")
+    });
+    revalidatePath("/admin/printer");
   }
 
 
   return (
     <Table>
-      <TableCaption>Lista de Estudantes</TableCaption>
+      <TableCaption>Lista de Impressoras</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">ID</TableHead>
           <TableHead>Nome</TableHead>
-          <TableHead>Email</TableHead>
+
           <TableHead>Ação</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {students.map((item: IStudent) => (
+        {printer.map((item: IPrinter) => (
           <TableRow key={item.id}>
             <TableCell className="font-medium">{item.id}</TableCell>
             <TableCell>{item.name}</TableCell>
-            <TableCell>{item.email}</TableCell>
+
             <TableCell>
-              <form >
+              <form>
                 <input type="text" hidden name="id" value={item.id} />
                 <Button variant="destructive"
-                  formAction={deleteStudent}>Excluir</Button>
+                  formAction={deletePrinter}>Excluir</Button>
               </form>
 
             </TableCell>
@@ -67,5 +61,5 @@ export default async function ListStudent() {
       </TableBody>
 
     </Table>
-  )
+  );
 }
